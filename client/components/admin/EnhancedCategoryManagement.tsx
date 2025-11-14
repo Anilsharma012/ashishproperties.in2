@@ -824,7 +824,9 @@ export default function EnhancedCategoryManagement() {
                         variant="outline"
                         aria-label="View category"
                         onClick={() => {
-                          /* no-op view */
+                          // Open category in new tab or navigate
+                          const slug = category.slug || category.name.toLowerCase().replace(/\s+/g, '-');
+                          window.open(`/categories/${slug}`, '_blank');
                         }}
                       >
                         <Eye className="h-4 w-4" />
