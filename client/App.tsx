@@ -170,6 +170,9 @@ function App() {
                   <Route path="/lease/:slug" element={<CategoryProperties />} />
                   <Route path="/pg/:slug" element={<CategoryProperties />} />
                   <Route path="/commercial/:slug" element={<CategoryProperties />} />
+                  <Route path="/co-living/:slug" element={<CategoryProperties />} />
+                  <Route path="/pg-co-living/:slug" element={<CategoryProperties />} />
+                  <Route path="/agricultural/:slug" element={<CategoryProperties />} />
                   <Route path="/property/:id" element={<PropertyDetail />} />
                   <Route path="/properties/:id" element={<PropertyDetail />} />
                   <Route path="/chat" element={<Chat />} />
