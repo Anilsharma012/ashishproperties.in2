@@ -116,7 +116,7 @@ function OLXStyleCategories() {
       try {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 5000);
-        const apiRes = await (window as any).api?.("/categories?active=true");
+        const apiRes = await (window as any).api?.("/categories?active=true&withSub=true");
         clearTimeout(timeout);
 
         if (
