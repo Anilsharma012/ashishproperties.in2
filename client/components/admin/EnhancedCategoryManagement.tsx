@@ -105,7 +105,9 @@ export default function EnhancedCategoryManagement() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterStatus, setFilterStatus] = useState<"all" | "active" | "inactive">("all");
+  const [filterStatus, setFilterStatus] = useState<
+    "all" | "active" | "inactive"
+  >("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -150,18 +152,20 @@ export default function EnhancedCategoryManagement() {
       setLoading(true);
       setError("");
 
-      const res = await api.get("admin/categories?withSub=true", token).catch((e: any) => {
-        throw e;
-      });
+      const res = await api
+        .get("admin/categories?withSub=true", token)
+        .catch((e: any) => {
+          throw e;
+        });
 
       const data = res?.data;
       if (data?.success) {
         const rawList: any[] = Array.isArray(data.data)
           ? data.data
           : Array.isArray(data.data?.categories)
-          ? data.data.categories
-          : [];
-        const list: Category[] = rawList.map(cat => {
+            ? data.data.categories
+            : [];
+        const list: Category[] = rawList.map((cat) => {
           const category = fromApi(cat);
           // Map subcategories from the separate collection to category format
           const subcategories = Array.isArray(cat.subcategories)
@@ -176,12 +180,10 @@ export default function EnhancedCategoryManagement() {
             : [];
           return {
             ...category,
-            subcategories
+            subcategories,
           };
         });
-        setCategories(
-          list.sort((a, b) => (a?.order ?? 0) - (b?.order ?? 0))
-        );
+        setCategories(list.sort((a, b) => (a?.order ?? 0) - (b?.order ?? 0)));
       } else {
         setError(data?.error || "Failed to fetch categories");
       }
@@ -276,7 +278,7 @@ export default function EnhancedCategoryManagement() {
             description: sub.description,
             image: imageUrl,
           };
-        })
+        }),
       );
 
       // create subcategories via API
@@ -294,7 +296,7 @@ export default function EnhancedCategoryManagement() {
               slug: sub.slug,
               description: sub.description,
             },
-            token
+            token,
           );
         } catch (e) {
           console.warn("Failed to create subcategory", sub, e);
@@ -327,7 +329,7 @@ export default function EnhancedCategoryManagement() {
       const res = await api.put(
         `admin/categories/${categoryId}`,
         payload,
-        token
+        token,
       );
       if (res?.data?.success) {
         fetchCategories();
@@ -389,7 +391,7 @@ export default function EnhancedCategoryManagement() {
       const res = await api.put(
         `admin/categories/${categoryId}`,
         toApi({ active }),
-        token
+        token,
       );
       if (!res?.data?.success) {
         setCategories(prev);
@@ -411,20 +413,32 @@ export default function EnhancedCategoryManagement() {
   ) => {
     const currentIndex = categories.findIndex((c) => c._id === categoryId);
     const newIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
-    if (currentIndex < 0 || newIndex < 0 || newIndex >= categories.length) return;
+    if (currentIndex < 0 || newIndex < 0 || newIndex >= categories.length)
+      return;
 
     const a = categories[currentIndex];
     const b = categories[newIndex];
 
     // optimistic swap
     const next = [...categories];
-    [next[currentIndex].order, next[newIndex].order] = [b.order ?? 0, a.order ?? 0];
+    [next[currentIndex].order, next[newIndex].order] = [
+      b.order ?? 0,
+      a.order ?? 0,
+    ];
     setCategories(next);
 
     try {
       await Promise.all([
-        api.put(`admin/categories/${a._id}`, toApi({ order: next[currentIndex].order }), token),
-        api.put(`admin/categories/${b._id}`, toApi({ order: next[newIndex].order }), token),
+        api.put(
+          `admin/categories/${a._id}`,
+          toApi({ order: next[currentIndex].order }),
+          token,
+        ),
+        api.put(
+          `admin/categories/${b._id}`,
+          toApi({ order: next[newIndex].order }),
+          token,
+        ),
       ]);
       window.dispatchEvent(new Event("categories:updated"));
     } catch (err) {
@@ -745,7 +759,7 @@ export default function EnhancedCategoryManagement() {
                                 name: s.name,
                                 slug: s.slug || "",
                                 description: s.description || "",
-                              })
+                              }),
                             ),
                             order: category.order ?? 999,
                             active: !!category.active,
@@ -841,8 +855,10 @@ export default function EnhancedCategoryManagement() {
                         aria-label="View category"
                         onClick={() => {
                           // Open category in new tab or navigate
-                          const slug = category.slug || category.name.toLowerCase().replace(/\s+/g, '-');
-                          window.open(`/categories/${slug}`, '_blank');
+                          const slug =
+                            category.slug ||
+                            category.name.toLowerCase().replace(/\s+/g, "-");
+                          window.open(`/categories/${slug}`, "_blank");
                         }}
                       >
                         <Eye className="h-4 w-4" />
@@ -864,7 +880,7 @@ export default function EnhancedCategoryManagement() {
                                 name: s.name,
                                 slug: s.slug || "",
                                 description: s.description || "",
-                              })
+                              }),
                             ),
                             order: category.order ?? 999,
                             active: !!category.active,

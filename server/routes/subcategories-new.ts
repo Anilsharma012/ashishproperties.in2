@@ -152,12 +152,10 @@ export const createSubcategory: RequestHandler = async (req, res) => {
 
     // Validate required fields
     if (!categoryId || !name) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          error: "Missing required fields: categoryId, name",
-        });
+      return res.status(400).json({
+        success: false,
+        error: "Missing required fields: categoryId, name",
+      });
     }
 
     // Validate category exists
@@ -182,12 +180,10 @@ export const createSubcategory: RequestHandler = async (req, res) => {
         .collection("subcategories")
         .findOne({ categoryId, slug: baseSlug });
       if (duplicate) {
-        return res
-          .status(409)
-          .json({
-            success: false,
-            error: "Subcategory slug already exists in this category",
-          });
+        return res.status(409).json({
+          success: false,
+          error: "Subcategory slug already exists in this category",
+        });
       }
     }
 
@@ -298,20 +294,16 @@ export const updateSubcategory: RequestHandler = async (req, res) => {
       const baseSlug = slugRaw ? base : generateSlug(base);
 
       if (slugRaw) {
-        const duplicate = await db
-          .collection("subcategories")
-          .findOne({
-            categoryId: targetCategoryId,
-            slug: baseSlug,
-            _id: { $ne: new ObjectId(id) },
-          });
+        const duplicate = await db.collection("subcategories").findOne({
+          categoryId: targetCategoryId,
+          slug: baseSlug,
+          _id: { $ne: new ObjectId(id) },
+        });
         if (duplicate) {
-          return res
-            .status(409)
-            .json({
-              success: false,
-              error: "Subcategory slug already exists in this category",
-            });
+          return res.status(409).json({
+            success: false,
+            error: "Subcategory slug already exists in this category",
+          });
         }
       }
 

@@ -89,10 +89,9 @@ export default function CategoryPage({
 
   const handleSubcategoryClick = (subcategory: Subcategory) => {
     // Navigate to category properties with both category and subcategory
-    navigate(
-      `/categories/${categorySlug}/${subcategory.slug}`,
-      { state: { category: categoryName, subcategory: subcategory.name } }
-    );
+    navigate(`/categories/${categorySlug}/${subcategory.slug}`, {
+      state: { category: categoryName, subcategory: subcategory.name },
+    });
   };
 
   if (loading) {
@@ -132,7 +131,8 @@ export default function CategoryPage({
                   {categoryName}
                 </h1>
                 <p className="text-gray-600 text-lg">
-                  {categoryDescription || `Explore all ${categoryName} listings in Rohtak`}
+                  {categoryDescription ||
+                    `Explore all ${categoryName} listings in Rohtak`}
                 </p>
               </div>
             </div>
@@ -143,7 +143,9 @@ export default function CategoryPage({
         <div className="container mx-auto px-4 py-12">
           {subcategories.length === 0 ? (
             <div className="bg-white rounded-lg p-8 text-center">
-              <p className="text-gray-500 text-lg">No subcategories available</p>
+              <p className="text-gray-500 text-lg">
+                No subcategories available
+              </p>
             </div>
           ) : (
             <>

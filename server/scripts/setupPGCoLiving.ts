@@ -10,7 +10,7 @@ async function setupPGCoLiving() {
 
     // 1. Create or get PG/CO-Living category
     console.log("\n📂 Creating/updating PG/CO-Living category...");
-    
+
     const pgCoLivingData = {
       name: "PG/CO-Living",
       slug: "pg-co-living",
@@ -35,10 +35,12 @@ async function setupPGCoLiving() {
         .collection("categories")
         .updateOne(
           { _id: existingCategory._id },
-          { $set: { ...pgCoLivingData, updatedAt: new Date() } }
+          { $set: { ...pgCoLivingData, updatedAt: new Date() } },
         );
     } else {
-      const result = await db.collection("categories").insertOne(pgCoLivingData);
+      const result = await db
+        .collection("categories")
+        .insertOne(pgCoLivingData);
       categoryId = result.insertedId.toString();
       console.log(`   ✅ Created new category with ID: ${categoryId}`);
     }

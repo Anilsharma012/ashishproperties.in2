@@ -67,7 +67,7 @@ import Settings from "./pages/Settings";
 import Messages from "./pages/Messages";
 import MyProperties from "./pages/MyProperties";
 import Clients from "./pages/Clients";
-import Favorites from "./pages/Favorites"; 
+import Favorites from "./pages/Favorites";
 import BlogPost from "./pages/BlogPost";
 import Maps from "./pages/Maps";
 import NewProjects from "./pages/NewProjects";
@@ -96,8 +96,8 @@ import PaymentStatus from "./pages/PaymentStatus";
 import PackagesPage from "./pages/Packages";
 
 // PWA install UI ko hata diya (hum APK route use kar rahe)
- // import PWAInstallButton from "./components/PWAInstallButton";
- // import PWAInstallPrompt from "./components/PWAInstallPrompt";
+// import PWAInstallButton from "./components/PWAInstallButton";
+// import PWAInstallPrompt from "./components/PWAInstallPrompt";
 
 import AppDownloadPopup from "@/components/AppDownloadPopup";
 
@@ -143,10 +143,19 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/categories" element={<Categories />} />
-                  <Route path="/categories/:category" element={<CategoryProperties />} />
+                  <Route
+                    path="/categories/:category"
+                    element={<CategoryProperties />}
+                  />
                   <Route path="/checkout/:planId" element={<Checkout />} />
-                  <Route path="/categories/:category/:subcategory" element={<CategoryProperties />} />
-                  <Route path="/categories/:category/:subcategory/:propertyType" element={<CategoryProperties />} />
+                  <Route
+                    path="/categories/:category/:subcategory"
+                    element={<CategoryProperties />}
+                  />
+                  <Route
+                    path="/categories/:category/:subcategory/:propertyType"
+                    element={<CategoryProperties />}
+                  />
                   <Route path="/properties" element={<Properties />} />
                   {/* New Category Routes */}
                   <Route path="/buy" element={<Buy />} />
@@ -160,8 +169,14 @@ function App() {
                   <Route path="/agricultural" element={<Agricultural />} />
                   <Route path="/services" element={<Services />} />
                   <Route path="/other-services" element={<OtherServices />} />
-                  <Route path="/other-services/:cat" element={<OtherServicesCategory />} />
-                  <Route path="/other-services/:cat/:sub" element={<OtherServicesListings />} />
+                  <Route
+                    path="/other-services/:cat"
+                    element={<OtherServicesCategory />}
+                  />
+                  <Route
+                    path="/other-services/:cat/:sub"
+                    element={<OtherServicesListings />}
+                  />
                   <Route path="/advertise" element={<Advertise />} />
                   {/* Category/Subcategory Listings */}
                   <Route path="/buy/:slug" element={<CategoryProperties />} />
@@ -169,16 +184,31 @@ function App() {
                   <Route path="/rent/:slug" element={<CategoryProperties />} />
                   <Route path="/lease/:slug" element={<CategoryProperties />} />
                   <Route path="/pg/:slug" element={<CategoryProperties />} />
-                  <Route path="/commercial/:slug" element={<CategoryProperties />} />
-                  <Route path="/co-living/:slug" element={<CategoryProperties />} />
-                  <Route path="/pg-co-living/:slug" element={<CategoryProperties />} />
-                  <Route path="/agricultural/:slug" element={<CategoryProperties />} />
+                  <Route
+                    path="/commercial/:slug"
+                    element={<CategoryProperties />}
+                  />
+                  <Route
+                    path="/co-living/:slug"
+                    element={<CategoryProperties />}
+                  />
+                  <Route
+                    path="/pg-co-living/:slug"
+                    element={<CategoryProperties />}
+                  />
+                  <Route
+                    path="/agricultural/:slug"
+                    element={<CategoryProperties />}
+                  />
                   <Route path="/property/:id" element={<PropertyDetail />} />
                   <Route path="/properties/:id" element={<PropertyDetail />} />
                   <Route path="/chat" element={<Chat />} />
                   <Route path="/chat/:conversationId" element={<ChatPage />} />
                   <Route path="/chats" element={<Conversations />} />
-                  <Route path="/conversation/:id" element={<ChatConversation />} />
+                  <Route
+                    path="/conversation/:id"
+                    element={<ChatConversation />}
+                  />
                   <Route path="/test-chat/:id" element={<TestChat />} />
                   <Route path="/dev/chat-test" element={<DevChatTest />} />
                   <Route path="/step3-test" element={<Step3Test />} />
@@ -188,7 +218,10 @@ function App() {
                   <Route path="/user-login" element={<EnhancedUserLogin />} />
                   <Route path="/auth" element={<ComprehensiveAuth />} />
                   <Route path="/firebase-auth" element={<FirebaseAuth />} />
-                  <Route path="/firebase-auth-test" element={<FirebaseAuthTest />} />
+                  <Route
+                    path="/firebase-auth-test"
+                    element={<FirebaseAuthTest />}
+                  />
                   <Route path="/user" element={<User />} />
                   <Route path="/user-dashboard" element={<UserDashboard />} />
                   <Route path="/post-property" element={<PostProperty />} />
@@ -211,22 +244,52 @@ function App() {
                     }
                   />
                   <Route path="/support/:action" element={<Support />} />
-                  <Route path="/support/ticket/:ticketId" element={<Support />} />
-                  <Route path="/enhanced-seller-dashboard" element={<EnhancedSellerDashboard />} />
+                  <Route
+                    path="/support/ticket/:ticketId"
+                    element={<Support />}
+                  />
+                  <Route
+                    path="/enhanced-seller-dashboard"
+                    element={<EnhancedSellerDashboard />}
+                  />
                   <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
                   <Route path="/agent-dashboard" element={<AgentDashboard />} />
                   <Route path="/seller/blog" element={<SellerBlog />} />
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/admin/support" element={<Admin />} />
-                  <Route path="/admin/reviews" element={<AdminReviewsModeration />} />
+                  <Route
+                    path="/admin/reviews"
+                    element={<AdminReviewsModeration />}
+                  />
                   <Route path="/admin/login" element={<AdminLogin />} />
-                  <Route path="/admin/ads/categories" element={<CategoriesPage />} />
-                  <Route path="/admin/ads/categories/:categoryId/subcategories" element={<SubcategoriesPage />} />
-                  <Route path="/admin/ads/categories/:categoryId/subcategories" element={<AdminSubcategoriesPage />} />
-                  <Route path="/admin/ads/categories/:categoryId/subcategories/*" element={<AdminSubcategoriesPage />} />
-                  <Route path="/admin/categories/:categoryId/subcategories" element={<AdminSubcategoriesPage />} />
-                  <Route path="/admin/categories/:categoryId/subcategories/*" element={<AdminSubcategoriesPage />} />
-                  <Route path="/admin/locations/countries" element={<CountriesPage />} />
+                  <Route
+                    path="/admin/ads/categories"
+                    element={<CategoriesPage />}
+                  />
+                  <Route
+                    path="/admin/ads/categories/:categoryId/subcategories"
+                    element={<SubcategoriesPage />}
+                  />
+                  <Route
+                    path="/admin/ads/categories/:categoryId/subcategories"
+                    element={<AdminSubcategoriesPage />}
+                  />
+                  <Route
+                    path="/admin/ads/categories/:categoryId/subcategories/*"
+                    element={<AdminSubcategoriesPage />}
+                  />
+                  <Route
+                    path="/admin/categories/:categoryId/subcategories"
+                    element={<AdminSubcategoriesPage />}
+                  />
+                  <Route
+                    path="/admin/categories/:categoryId/subcategories/*"
+                    element={<AdminSubcategoriesPage />}
+                  />
+                  <Route
+                    path="/admin/locations/countries"
+                    element={<CountriesPage />}
+                  />
                   <Route path="/staff/login" element={<StaffLogin />} />
                   <Route path="/staff-dashboard" element={<StaffDashboard />} />
                   <Route path="/staff-admin" element={<StaffAdmin />} />
@@ -252,7 +315,10 @@ function App() {
                   {/* Content Pages */}
                   <Route path="/about-us" element={<AboutUs />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                  <Route path="/terms-conditions" element={<TermsAndConditions />} />
+                  <Route
+                    path="/terms-conditions"
+                    element={<TermsAndConditions />}
+                  />
                   <Route path="/refund-policy" element={<ContentPage />} />
                   <Route path="/contact-us" element={<ContactUs />} />
                   <Route path="/contact" element={<ContactUs />} />
@@ -261,7 +327,10 @@ function App() {
                   <Route path="/page/:slug" element={<DynamicPage />} />
                   <Route path="/p/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/p/about-us" element={<AboutUs />} />
-                  <Route path="/p/terms-conditions" element={<TermsAndConditions />} />
+                  <Route
+                    path="/p/terms-conditions"
+                    element={<TermsAndConditions />}
+                  />
                   <Route path="/p/:slug" element={<ContentPage />} />
 
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
