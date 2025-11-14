@@ -683,12 +683,29 @@ export const handleIconUpload: RequestHandler = async (req, res) => {
       });
     }
 
-    // In a real implementation, upload to cloud storage
-    // For now, simulate with a placeholder URL
+    // Save file to disk
+    const fs = require("fs").promises;
+    const path = require("path");
+
+    const uploadDir = path.join(process.cwd(), "uploads", "category-icons");
+
+    // Create directory if it doesn't exist
+    try {
+      await fs.mkdir(uploadDir, { recursive: true });
+    } catch (error) {
+      console.error("Error creating upload directory:", error);
+    }
+
     const timestamp = Date.now();
     const random = Math.random().toString(36).substr(2, 9);
-    const extension = req.file.originalname.split(".").pop();
-    const iconUrl = `/uploads/category-icons/${timestamp}-${random}.${extension}`;
+    const extension = req.file.originalname.split(".").pop() || "png";
+    const filename = `${timestamp}-${random}.${extension}`;
+    const filepath = path.join(uploadDir, filename);
+
+    // Write file to disk
+    await fs.writeFile(filepath, req.file.buffer);
+
+    const iconUrl = `/uploads/category-icons/${filename}`;
 
     const response: ApiResponse<{ iconUrl: string }> = {
       success: true,
