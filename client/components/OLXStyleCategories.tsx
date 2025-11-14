@@ -143,23 +143,33 @@ function OLXStyleCategories() {
 
   /* ---------- Click handling with overrides ---------- */
   const handleCategoryClick = (category: Category) => {
+    // Set active category and its subcategories
+    setActiveCat(category);
+    setActiveSubcats(Array.isArray(category.subcategories) ? category.subcategories : []);
+
     const key = norm(category.slug) || norm(category.name);
 
     // 1) Hard override routes (includes "new-projects" -> "/new-projects")
     if (key && ROUTE_OVERRIDES[key]) {
-      navigate(ROUTE_OVERRIDES[key]);
+      // Don't navigate for categories with subcategories - show them inline instead
+      if (!(Array.isArray(category.subcategories) && category.subcategories.length > 0)) {
+        navigate(ROUTE_OVERRIDES[key]);
+      }
       return;
     }
 
     // 2) Property pages quick-map (if API sends these names)
     if (isMatch(category, "buy", "sale", "rent", "lease", "pg")) {
-      navigate(`/${norm(category.slug)}`);
+      // Don't navigate for categories with subcategories - show them inline instead
+      if (!(Array.isArray(category.subcategories) && category.subcategories.length > 0)) {
+        navigate(`/${norm(category.slug)}`);
+      }
       return;
     }
 
-    // 3) Fallback generic category page
-    const finalSlug = norm(category.slug) || norm(category.name) || "category";
-    navigate(`/categories/${finalSlug}`);
+    // 3) Fallback generic category page (but still show subcategories inline first)
+    // Don't navigate immediately - let users see subcategories first
+    // They can click "View All" to see the full category page
   };
 
   const handleSellClick = () => navigate("/post-property");
