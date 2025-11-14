@@ -729,13 +729,29 @@ export default function EnhancedCategoryManagement() {
                   <TableCell>
                     <div className="space-y-1">
                       <button
-                        className="text-[#C70000] underline text-sm"
+                        className="text-[#C70000] underline text-sm hover:font-semibold"
                         aria-label={`Manage subcategories for ${category.name}`}
-                        onClick={() =>
-                          navigate(
-                            `/admin/ads/categories/${category._id}/subcategories`
-                          )
-                        }
+                        onClick={() => {
+                          setEditingCategory(category);
+                          // PREFILL form for edit with existing subcategories
+                          setNewCategory({
+                            name: category.name || "",
+                            slug: category.slug || "",
+                            description: category.description || "",
+                            icon: category.icon || "",
+                            iconFile: null,
+                            subcategories: (category.subcategories || []).map(
+                              (s) => ({
+                                name: s.name,
+                                slug: s.slug || "",
+                                description: s.description || "",
+                              })
+                            ),
+                            order: category.order ?? 999,
+                            active: !!category.active,
+                          });
+                          setIsCreateDialogOpen(true);
+                        }}
                       >
                         Manage Subcategories (
                         {(category.subcategories || []).length})
