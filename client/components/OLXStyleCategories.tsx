@@ -116,7 +116,9 @@ function OLXStyleCategories() {
       try {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 5000);
-        const apiRes = await (window as any).api?.("/categories?active=true");
+        const apiRes = await (window as any).api?.(
+          "/categories?active=true&withSub=true",
+        );
         clearTimeout(timeout);
 
         if (
@@ -157,9 +159,9 @@ function OLXStyleCategories() {
       return;
     }
 
-    // 3) Fallback generic category page
+    // 3) Navigate to category page for other categories
     const finalSlug = norm(category.slug) || norm(category.name) || "category";
-    navigate(`/categories/${finalSlug}`);
+    navigate(`/${finalSlug}`);
   };
 
   const handleSellClick = () => navigate("/post-property");
@@ -249,60 +251,6 @@ function OLXStyleCategories() {
           })}
         </div>
       </div>
-
-      {/* Subcategories panel (optional; needs API data) */}
-      {activeCat && (
-        <div className="px-4 pb-12">
-          <div className="bg-white border border-gray-200 rounded-lg p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold text-gray-900">
-                {activeCat.name} Subcategories
-              </h3>
-              <button
-                className="text-sm text-[#C70000] hover:underline"
-                onClick={() =>
-                  navigate(
-                    `/categories/${norm(activeCat.slug) || norm(activeCat.name)}`,
-                  )
-                }
-              >
-                View All
-              </button>
-            </div>
-
-            {activeSubcats.length === 0 ? (
-              <div className="text-sm text-gray-500">
-                No subcategories found
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                {activeSubcats.map((sub: any) => (
-                  <button
-                    key={sub._id || sub.slug}
-                    onClick={() =>
-                      navigate(
-                        `/categories/${
-                          norm(activeCat.slug) || norm(activeCat.name)
-                        }/${norm(sub.slug) || norm(sub.name)}`,
-                      )
-                    }
-                    className="text-left group border border-gray-200 rounded-md p-3 hover:border-red-300 hover:shadow-sm transition"
-                  >
-                    <div className="text-gray-900 text-sm font-medium group-hover:text-[#C70000] truncate">
-                      {sub.name || sub.title || sub.slug}
-                    </div>
-                    {sub.description && (
-                      <div className="text-xs text-gray-500 mt-1 line-clamp-2">
-                        {sub.description}
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

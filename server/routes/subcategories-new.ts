@@ -152,12 +152,10 @@ export const createSubcategory: RequestHandler = async (req, res) => {
 
     // Validate required fields
     if (!categoryId || !name) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          error: "Missing required fields: categoryId, name",
-        });
+      return res.status(400).json({
+        success: false,
+        error: "Missing required fields: categoryId, name",
+      });
     }
 
     // Validate category exists
@@ -182,12 +180,10 @@ export const createSubcategory: RequestHandler = async (req, res) => {
         .collection("subcategories")
         .findOne({ categoryId, slug: baseSlug });
       if (duplicate) {
-        return res
-          .status(409)
-          .json({
-            success: false,
-            error: "Subcategory slug already exists in this category",
-          });
+        return res.status(409).json({
+          success: false,
+          error: "Subcategory slug already exists in this category",
+        });
       }
     }
 
@@ -298,20 +294,16 @@ export const updateSubcategory: RequestHandler = async (req, res) => {
       const baseSlug = slugRaw ? base : generateSlug(base);
 
       if (slugRaw) {
-        const duplicate = await db
-          .collection("subcategories")
-          .findOne({
-            categoryId: targetCategoryId,
-            slug: baseSlug,
-            _id: { $ne: new ObjectId(id) },
-          });
+        const duplicate = await db.collection("subcategories").findOne({
+          categoryId: targetCategoryId,
+          slug: baseSlug,
+          _id: { $ne: new ObjectId(id) },
+        });
         if (duplicate) {
-          return res
-            .status(409)
-            .json({
-              success: false,
-              error: "Subcategory slug already exists in this category",
-            });
+          return res.status(409).json({
+            success: false,
+            error: "Subcategory slug already exists in this category",
+          });
         }
       }
 
@@ -522,12 +514,29 @@ export const handleSubcategoryIconUpload: RequestHandler = async (req, res) => {
       });
     }
 
-    // In a real implementation, upload to cloud storage
-    // For now, simulate with a placeholder URL
+    // Save file to disk
+    const fs = require("fs").promises;
+    const path = require("path");
+
+    const uploadDir = path.join(process.cwd(), "uploads", "subcategory-icons");
+
+    // Create directory if it doesn't exist
+    try {
+      await fs.mkdir(uploadDir, { recursive: true });
+    } catch (error) {
+      console.error("Error creating upload directory:", error);
+    }
+
     const timestamp = Date.now();
     const random = Math.random().toString(36).substr(2, 9);
-    const extension = req.file.originalname.split(".").pop();
-    const iconUrl = `/uploads/subcategory-icons/${timestamp}-${random}.${extension}`;
+    const extension = req.file.originalname.split(".").pop() || "png";
+    const filename = `${timestamp}-${random}.${extension}`;
+    const filepath = path.join(uploadDir, filename);
+
+    // Write file to disk
+    await fs.writeFile(filepath, req.file.buffer);
+
+    const iconUrl = `/uploads/subcategory-icons/${filename}`;
 
     const response: ApiResponse<{ iconUrl: string }> = {
       success: true,
