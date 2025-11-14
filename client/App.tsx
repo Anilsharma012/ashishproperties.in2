@@ -71,6 +71,7 @@ import Favorites from "./pages/Favorites";
 import BlogPost from "./pages/BlogPost";
 import Maps from "./pages/Maps";
 import NewProjects from "./pages/NewProjects";
+import Commercial from "./pages/Commercial";
 import RecentViews from "./pages/RecentViews";
 import Leads from "./pages/Leads";
 import Notifications from "./pages/Notifications";
