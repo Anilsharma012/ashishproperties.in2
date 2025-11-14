@@ -151,6 +151,7 @@ function App() {
                   <Route path="/rent" element={<Rent />} />
                   <Route path="/lease" element={<Lease />} />
                   <Route path="/pg" element={<PG />} />
+                  <Route path="/commercial" element={<Commercial />} />
                   <Route path="/services" element={<Services />} />
                   <Route path="/other-services" element={<OtherServices />} />
                   <Route path="/other-services/:cat" element={<OtherServicesCategory />} />
