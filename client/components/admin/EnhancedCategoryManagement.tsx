@@ -150,7 +150,7 @@ export default function EnhancedCategoryManagement() {
       setLoading(true);
       setError("");
 
-      const res = await api.get("admin/categories", token).catch((e: any) => {
+      const res = await api.get("admin/categories?withSub=true", token).catch((e: any) => {
         throw e;
       });
 
@@ -161,7 +161,24 @@ export default function EnhancedCategoryManagement() {
           : Array.isArray(data.data?.categories)
           ? data.data.categories
           : [];
-        const list: Category[] = rawList.map(fromApi);
+        const list: Category[] = rawList.map(cat => {
+          const category = fromApi(cat);
+          // Map subcategories from the separate collection to category format
+          const subcategories = Array.isArray(cat.subcategories)
+            ? cat.subcategories.map((sub: any) => ({
+                id: sub._id?.toString?.() || sub.id || Math.random().toString(),
+                name: sub.name || "",
+                slug: sub.slug || "",
+                description: sub.description || "",
+                image: sub.iconUrl || sub.icon || "",
+                count: sub.count || 0,
+              }))
+            : [];
+          return {
+            ...category,
+            subcategories
+          };
+        });
         setCategories(
           list.sort((a, b) => (a?.order ?? 0) - (b?.order ?? 0))
         );
